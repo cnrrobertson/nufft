@@ -9,7 +9,7 @@ using GaussQuadrature
 
 # %%
 # Nonuniformly sampled points
-M = 128
+M = 1028
 nu_ts = sort(rand(M) .* 2pi)
 u_ts = range(0, 2pi, M)
 nu_ys = sin.(nu_ts)
@@ -40,7 +40,7 @@ display(P)
 # %%
 # Use legendre nonuniform points
 f(x) = sin(x)
-M = 128
+M = 1028
 kmax = 2M
 nu_ts,nu_ws = legendre(M)
 nu_ts .*= pi # rescale

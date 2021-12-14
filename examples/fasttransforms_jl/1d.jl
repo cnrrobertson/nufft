@@ -8,21 +8,8 @@ using FFTW
 using GaussQuadrature
 
 # %%
-# Nonuniform sampling of sin with random sampling
-M = 1028
-xs = sort(2pi * rand(M))
-fs = sin.(xs) .+ 1im*0
-
-# %%
-fks = nufft2(fs, xs, 1e-8)
-ks = -(M ÷ 2):((M ÷ 2) - 1)
-P = plot(ks, abs.(fks))
-display(P)
-# new_fs = inufft2(fks, xs, 1e-8)
-
-# %%
 # Nonuniformly sampled points
-M = 2056
+M = 1028
 nu_ts = sort(rand(M) .* 2pi)
 u_ts = range(0, 2pi, M)
 nu_ys = sin.(nu_ts)
