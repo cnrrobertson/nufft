@@ -1,7 +1,10 @@
-\section{Numerical methods.}
+\section{Numerical methods}
 
 
-\subsection{Gauusian kernel NUFFT}
+\subsection{Gaussian kernel NUFFT}
+%TODO: fill a few pages on Type-3 NUFFT with Gaussian kernel here.
+
+First,
 Since Type-$1$ and Type-$2$ have been covered in the class, we avoid repeating the same discussions on these types.
 Instead, here we describe Type-$3$ NUFFT with Gaussian kernel based on \cite{JCP-2003-Greengard}.
 The main idea of Type-$3$ is to sandwich an intermediate uniform data between the input and output both of which are nonuniform.
@@ -19,46 +22,46 @@ The procedure is summarized as follows.
 
 In general, Type-$3$ NUFFT from the space domain and the frequency domain corresponds to the following continuous Fourier transform
 \begin{equation}
-    F(\bm{s}) 
+    F(\bm{s})
   = \frac{1}{(2\pi)^d} \int_{\mathbb{R}^d}^{}
     f(\bm{x})\exp(-i\bm{s}\cdot\bm{x}) d\bm{x}
 \end{equation}
 where we denote the input data by $f(\bm{x})$ and output by $F(\bm{s})$ that is the Fourier transform $F(\bm{s})$.
 For simplicity, we discuss the one-dimensional case.
 We start with the first step, i.e, the construction of the intermediate uniform data by convolution.
-We have $f(x)$ with the input data as 
+We have $f(x)$ with the input data as
 \begin{equation}
   f(x) = \sqrt{2\pi}\sum_{j=0}^{N-1}f_j\delta(x-x_j).
 \end{equation}
 Then we convolve $f(x)$ using $g_{\tau}(x) := \exp(-\frac{1}{4\tau}x^2)$
 \begin{equation}
-    f_{\tau}(x) := f\ast g_{\tau} (x) 
+    f_{\tau}(x) := f\ast g_{\tau} (x)
   = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(y)g_{\tau}(x-y) dy
 \end{equation}
 setting the parameter $\tau$ appropriately.
 Since $f_{\tau}$ can be smooth enough, standard uniform FFT methods can be applied to obtain the data of $f_{\tau}$ on a uniformly spaced points.
 Now, switching our view of $f_{\tau}$ from the space domain to the frequency domain because the availability of the uniform sampling, we apply deconvolution to $f_{\tau}$ to obtain $F_{\tau}^{-\sigma}$ with an additional parameter $\sigma$.
-Specifically, we intend to apply the convolution theorem to the product $f_{\tau}G_{\sigma}$ 
+Specifically, we intend to apply the convolution theorem to the product $f_{\tau}G_{\sigma}$
 where $G_{\sigma} = \sqrt{2\sigma}e^{-s^2\sigma}$ is the Fourier transform of $g_{\sigma}$ defining the following deconvolved $f_{\tau}^{-\sigma}$ with $\sigma$
 \begin{equation}
-    f_{\tau}^{-\sigma}(x) := f_{\tau}(x)/G_{\sigma}(x) 
+    f_{\tau}^{-\sigma}(x) := f_{\tau}(x)/G_{\sigma}(x)
   = \frac{1}{\sqrt{2\sigma}}e^{\sigma x^2}f_{\tau}(x).
 \end{equation}
 Then, the Fourier transform $F_{\tau}^{-\sigma}$ by deconvolving $f_{\tau}$ is
 \begin{equation}
-     F_{\tau}^{-\sigma}(x) 
+     F_{\tau}^{-\sigma}(x)
   := \frac{1}{2\pi} \int_{-\infty}^{\infty} f_{\tau}^{-\sigma}(x) e^{-ixs} dx.
 \end{equation}
 Introducing $f_{\tau}^{-\sigma}$ and $F_{\tau}^{-\sigma}$ and using the convolution theorem,
 we compute $F_{\tau}$ explicitly
 \begin{equation}
-     F_{\tau}^{-\sigma}(x)G_{\sigma} 
+     F_{\tau}^{-\sigma}(x)G_{\sigma}
    = \mathcal{F}[f_{\tau}^{-\sigma}\ast g_{\sigma}]
    = F_{\tau}.
 \end{equation}
 The discretization of $F_{\tau}$ can be done on a uniform grids because $F_{\tau}$ is still a convolved function as follows
 \begin{align}
-     F_{\tau}(s) 
+     F_{\tau}(s)
   &= F_{\tau}^{-\sigma}(s) \\
   &= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}F_{\tau}^{-\sigma}g_{\sigma}(s-u)du \\
   &\simeq \frac{\Delta_{s}}{\sqrt{2\pi}}\sum_{m}^{}F_{\tau}^{-\sigma}(m\Delta_{s})
@@ -83,7 +86,7 @@ We briefly present a few of such kernels.
 In fact, alternative approaches to Gaussian NUFFT had already appeared in $1960$s in the area of digital signal processing.
 For example, some researchers have carried out some analysis of NUFFT with "Kaiser-Bessel" kernel \cite{Book-Kaiser} defined below
 \begin{equation}
-  \phi_{KB,\beta}(z) := 
+  \phi_{KB,\beta}(z) :=
   \begin{cases}
     I_{0}\left(\beta\sqrt{1-z^2}\right) \quad |z| \le 1,\\
     0 \quad otherwise,
@@ -91,24 +94,24 @@ For example, some researchers have carried out some analysis of NUFFT with "Kais
   \label{eq:KB-kernel}
 \end{equation}
 where $I_{0}$ is the modified Bessel function of order zero.
-The Fourier transfor $\phi_{KB,\beta}$ of the kernel above is known to be 
+The Fourier transfor $\phi_{KB,\beta}$ of the kernel above is known to be
 \begin{equation}
-  \hat{\phi}_{KB,\beta}(\xi) := 
+  \hat{\phi}_{KB,\beta}(\xi) :=
   \frac{2\sinh\sqrt{\beta^2-\xi^2}}{I_{0}(\beta)\sqrt{\beta^2-\xi^2}}.
   \label{eq:FT-KB-kernel}
-\end{equation} 
+\end{equation}
 We do not go over the detail further, but the existence of such approaches shows the high demand for establishing efficient numerical methods to deal with NUFFT since before.
 
-Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett} have proposed to apply "Exponential of Semicircle" kernel ('ES-kernel') defined below 
+Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett} have proposed to apply "Exponential of Semicircle" kernel ('ES-kernel') defined below
 \begin{equation}
-  \phi_{\beta}(z) := 
+  \phi_{\beta}(z) :=
   \begin{cases}
     \exp\left(\beta\sqrt{1-z^2} - 1\right) \quad |z| \le 1,\\
     0 \quad otherwise.
   \end{cases}
   \label{eq:ES-kernel}
 \end{equation}
-Although the most part of the structure of their numerical method is similar to the NUFFT with Gauusian kernel, the authors have chosen the special kernel and approximate the Frourier transform $\hat{\phi}_{\beta}$ with a numerical quadrature scheme instead of determining $\hat{\phi}_{\beta}$ explicitly when they 'deconvolve' Fourier coefficients.
+Although the most part of the structure of their numerical method is similar to the NUFFT with Gaussian kernel, the authors have chosen the special kernel and approximate the Fourier transform $\hat{\phi}_{\beta}$ with a numerical quadrature scheme instead of determining $\hat{\phi}_{\beta}$ explicitly when they 'deconvolve' Fourier coefficients.
 
 \subsection{Low-rank approximation approach}
 % TODO: add mathematical descriptiontions based on Dr. Townsend's paper
@@ -116,21 +119,21 @@ Here we describe another type of numerical method with a different point of view
 First, the authors set up the formulation of the discrete Fourier transform as a matrix-vector product.
 The uniform case
 \begin{equation}
-  \bm{f} = \bm{F}_{2}\bm{c} 
+  \bm{f} = \bm{F}_{2}\bm{c}
   \label{eq:matrix-vector-product-ufft-type-2}
 \end{equation}
-and the nonuniform case 
+and the nonuniform case
 \begin{equation}
-  \bm{f} = \tilde{\bm{F}}_{2}\bm{c} 
+  \bm{f} = \tilde{\bm{F}}_{2}\bm{c}
   \label{eq:matrix-vector-product-nufft-type-2}
 \end{equation}
-where 
-$\bm{F}_{2} := \exp(2\pi i \frac{j}{N}k)$ and 
-$\tilde{\bm{F}}_{2} := \exp(2\pi i x_{j}k)$ 
+where
+$\bm{F}_{2} := \exp(2\pi i \frac{j}{N}k)$ and
+$\tilde{\bm{F}}_{2} := \exp(2\pi i x_{j}k)$
 $(0 \le \j, k \le N-1)$
 
 \begin{equation}
-  \tilde{\bm{F}}_{2}\oslash\bm{F} \simeq 
+  \tilde{\bm{F}}_{2}\oslash\bm{F} \simeq
   \sum_{l=0}^{L-1}\bm{u}_{l}\otimes\bm{v}_{l}
 \end{equation}
 
@@ -153,6 +156,6 @@ keys:
 
 
 
-So far, we have studied past numerical methods and now have focused on a few approaches that seem most promissing.
-We will present the summary of the numerical results obtained by coding ourselves and using publicly available libraries for the methods descrived above.
+So far, we have studied past numerical methods and now have focused on a few approaches that seem most promising.
+We will present the summary of the numerical results obtained by coding ourselves and using publicly available libraries for the methods described above.
 
