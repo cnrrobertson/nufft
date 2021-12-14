@@ -37,7 +37,7 @@ display(P)
 
 # %%
 # Smoothing for dense nonuniform data
-ts = sort(rand(2000) .* 2pi)
+ts = sort(rand(1028) .* 2pi)
 ys = sin.(ts)
 
 # Data
@@ -55,7 +55,7 @@ display(P)
 
 # %%
 # FFT on smoothed dense nonuniform data
-M = 512
+M = 1028
 y(t) = sin(t) + cos(50t) - 10*sin(100t)
 ts = sort(rand(M) .* 2pi)
 ys = y.(ts)
@@ -79,7 +79,8 @@ full_yhats = fftshift(fft(full_ys))
 full_ks = 1:length(full_yhats)
 nu_ks = -(R*M ÷ 2):((R*M ÷ 2) - 1)
 u_ks = -(M ÷ 2):((M ÷ 2) - 1)
-# full_yhats .*= sqrt(pi/tau) .* exp.((ks .^ 2) .* tau)
+full_yhats .*= sqrt(pi/tau) .* exp.((nu_ks .^ 2) .* tau)
+full_yhats = fftshift(full_yhats)
 # full_ys = real.(ifft(full_yhats))
 
 p1 = plot(u_ks, real.(yhats))
