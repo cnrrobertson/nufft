@@ -1,10 +1,10 @@
-\section{Numerical methods.}
+\section{Numerical methods}
 
 
-\subsection{Gauusian kernel NUFFT}
+\subsection{Gaussian kernel NUFFT}
 %TODO: fill a few pages on Type-3 NUFFT with Gaussian kernel here.
 
-First, 
+First,
 Since Type-$1$ and Type-$2$ have been covered in the class, we avoid repeating the same discussions on these types.
 Instead, we describe Type-$3$ NUFFT with Gaussian kernel.
 
@@ -25,7 +25,7 @@ We briefly present a few of such kernels.
 In fact, alternative approaches to Gaussian NUFFT had already appeared in $1960$s in the area of digital signal processing.
 For example, some researchers have carried out some analysis of NUFFT with "Kaiser-Bessel" kernel \cite{Book-Kaiser} defined below
 \begin{equation}
-  \phi_{KB,\beta}(z) := 
+  \phi_{KB,\beta}(z) :=
   \begin{cases}
     I_{0}\left(\beta\sqrt{1-z^2}\right) \quad |z| \le 1,\\
     0 \quad otherwise,
@@ -33,17 +33,17 @@ For example, some researchers have carried out some analysis of NUFFT with "Kais
   \label{eq:KB-kernel}
 \end{equation}
 where $I_{0}$ is the modified Bessel function of order zero.
-The Fourier transfor $\phi_{KB,\beta}$ of the kernel above is known to be 
+The Fourier transfor $\phi_{KB,\beta}$ of the kernel above is known to be
 \begin{equation}
-  \hat{\phi}_{KB,\beta}(\xi) := 
+  \hat{\phi}_{KB,\beta}(\xi) :=
   \frac{2\sinh\sqrt{\beta^2-\xi^2}}{I_{0}(\beta)\sqrt{\beta^2-\xi^2}}.
   \label{eq:FT-KB-kernel}
-\end{equation} 
+\end{equation}
 We do not go over the detail further, but the existence of such approaches shows the high demand for establishing efficient numerical methods to deal with NUFFT since before.
 
-Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett} have proposed to apply "Exponential of Semicircle" kernel ('ES-kernel') defined below 
+Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett} have proposed to apply "Exponential of Semicircle" kernel ('ES-kernel') defined below
 \begin{equation}
-  \phi_{\beta}(z) := 
+  \phi_{\beta}(z) :=
   \begin{cases}
     \exp\left(\beta\sqrt{1-z^2} - 1\right) \quad |z| \le 1,\\
     0 \quad otherwise.
@@ -58,21 +58,21 @@ Here we describe another type of numerical method with a different point of view
 First, the authors set up the formulation of the discrete Fourier transform as a matrix-vector product.
 The uniform case
 \begin{equation}
-  \bm{f} = \bm{F}_{2}\bm{c} 
+  \bm{f} = \bm{F}_{2}\bm{c}
   \label{eq:matrix-vector-product-ufft-type-2}
 \end{equation}
-and the nonuniform case 
+and the nonuniform case
 \begin{equation}
-  \bm{f} = \tilde{\bm{F}}_{2}\bm{c} 
+  \bm{f} = \tilde{\bm{F}}_{2}\bm{c}
   \label{eq:matrix-vector-product-nufft-type-2}
 \end{equation}
-where 
-$\bm{F}_{2} := \exp(2\pi i \frac{j}{N}k)$ and 
-$\tilde{\bm{F}}_{2} := \exp(2\pi i x_{j}k)$ 
+where
+$\bm{F}_{2} := \exp(2\pi i \frac{j}{N}k)$ and
+$\tilde{\bm{F}}_{2} := \exp(2\pi i x_{j}k)$
 $(0 \le \j, k \le N-1)$
 
 \begin{equation}
-  \tilde{\bm{F}}_{2}\oslash\bm{F} \simeq 
+  \tilde{\bm{F}}_{2}\oslash\bm{F} \simeq
   \sum_{l=0}^{L-1}\bm{u}_{l}\otimes\bm{v}_{l}
 \end{equation}
 

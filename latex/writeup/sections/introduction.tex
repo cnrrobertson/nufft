@@ -1,8 +1,34 @@
 
 % TODO:
-% - summarize the research area and approaches 
-%   use Townsend's summary     
+% - summarize the research area and approaches
+%   use Townsend's summary
 
-\begin{itemize}
-  \item kernels (window functions)
-\end{itemize}
+% \begin{itemize}
+%   \item kernels (window functions)
+% \end{itemize}
+
+\section{Introduction}
+
+There are many signal and image processing applications in which real or frequency space samples are collected non-uniformly.
+As a result, analyzing the Fourier spectrum of nonuniform samples or evaluating points from non-uniform frequency data has been a focus of numerical analysts for more than half a century. % TODO: Citation?
+Although this can be easily accomplished using the direct discrete Fourier transform sum of non-uniform samples $(x_n, f(x_n))$ where $x_n = \frac{2\pi n}{N}$:
+\begin{align*}
+  \hat{f}(k) = \sum_{n=0}^{N-1} f(x_n) e^{-2i \pi k \frac{n}{N}}
+,\end{align*}
+this summation is of order $O(N^{2})$.
+
+It would be preferable to reduce the computational burden of this process via the fast Fourier transform (FFT).
+This algorithm can reduce the computational cost to $O(N\log{N})$ by taking advantage of the symmetry provided by uniform sampling:
+\begin{align*}
+  \hat{f}(k) = \sum_{n=0}^{\frac{N}{2}-1} f(x_{2n})e^{-2i \pi k \frac{2n}{N}} + e^{-2i\frac{\pi k}{N}} \sum_{n=0}^{\frac{N}{2}-1} f(x_{2n+1}e^{-2i \pi k \frac{2n}{N}})
+.\end{align*}
+Due to this symmetry requirement, it cannot be directly applied to non-uniform points.
+
+Thus, there has been significant effort to accurately and cheaply remap the non-uniform samples to a uniform grid which can then be transformed via the FFT.
+This has become known as the non-uniform fast Fourier transform (NUFFT) the key component of which is the procedure used to map the non-uniform samples to uniform samples.
+
+Several approaches have been proposed for this initial mapping including polynomial or spline interpolation, delta spike smoothing via smooth kernel functions, and low rank representations of the discrete Fourier transform matrix. % TODO: Citation?
+Many inroads have been made to maximize speed and accuracy with these methods, but the exact mapping procedure is still an active research topic.
+
+In this report, we explore the variety of approaches for mapping non-uniform to uniform points including the most popular smoothing kernels and the low-rank approximation.
+We complement this discussion with some programming exploration and examples using our own code as well as established NUFFT libraries.
