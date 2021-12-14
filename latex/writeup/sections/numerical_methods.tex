@@ -4,14 +4,14 @@
 \subsection{Gauusian kernel NUFFT}
 Since Type-$1$ and Type-$2$ have been covered in the class, we avoid repeating the same discussions on these types.
 Instead, here we describe Type-$3$ NUFFT with Gaussian kernel based on \cite{JCP-2003-Greengard}.
-The main idea of Type-$3$ is to sandwich an intermediate uniform data between the input and output data both of which are nonuniform.
+The main idea of Type-$3$ is to sandwich an intermediate uniform data between the input and output both of which are nonuniform.
 The procedure is summarized as follows.
 \begin{enumerate}
   \item Split the 'nonuniform to nonuniform' data processing into two steps
   by adding the intermediate uniform data construction:
   \begin{enumerate}
-    \item from the nonuniform input to the uniform interdemiate,
-    \item from the nuniform interdemiate to the nonuniform output.
+    \item from the nonuniform input to the uniform interdemiate data,
+    \item from the uniform interdemiate data to the nonuniform output.
   \end{enumerate}
   \item Apply Type-$1$ method to the first 'nonuniform-uniform' step by convolving the input data.
   \item Then, apply Type-$2$ method to the second 'uniform-nonuniform' step by deconvolving the intermediate data.
