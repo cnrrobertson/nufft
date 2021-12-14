@@ -1,0 +1,9 @@
+$pdflatex="pdflatex %O %S";
+$out_dir = 'out';
+$pdf_mode = 1;
+
+@BIBINPUTS = (".", "..","./out");
+@default_files = (
+  'main.tex',
+);
+

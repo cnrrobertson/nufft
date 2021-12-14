@@ -1,0 +1,100 @@
+\section{Numerical methods.}
+
+
+\subsection{Gauusian kernel NUFFT}
+%TODO: fill a few pages on Type-3 NUFFT with Gaussian kernel here.
+
+First, 
+Since Type-$1$ and Type-$2$ have been covered in the class, we avoid repeating the same discussions on these types.
+Instead, we describe Type-$3$ NUFFT with Gaussian kernel.
+
+- NU -> U: convolve
+- U -> NU: de-convolve
+
+
+
+While the theoretical anlysis and numerical methods of NUFFT with Gaussian kernel have been well known \cite{SISC-1993-Dutt-Rokhlin}, \cite{SIAM-Rev-2004-Greengard}, it seems that the research activities to improve preexisting NUFFT schemes or develop more sophisticated methods have not settled down, as far as we studied past numerical methods on NUFFT.
+Even nowadays, a variety of numerical methods based on various approaches to NUFFT have been actively developed.
+We describe a few of them in the following discussions.
+
+\subsection{Alternative kernel approach}
+One representative alternative to Gaussian NUFFT is to choose a different kernel.
+This is a natural derivation because it is expected that the other part of NUFFT can remain the same except for the choice of the kernel.
+We briefly present a few of such kernels.
+
+In fact, alternative approaches to Gaussian NUFFT had already appeared in $1960$s in the area of digital signal processing.
+For example, some researchers have carried out some analysis of NUFFT with "Kaiser-Bessel" kernel \cite{Book-Kaiser} defined below
+\begin{equation}
+  \phi_{KB,\beta}(z) := 
+  \begin{cases}
+    I_{0}\left(\beta\sqrt{1-z^2}\right) \quad |z| \le 1,\\
+    0 \quad otherwise,
+  \end{cases}
+  \label{eq:KB-kernel}
+\end{equation}
+where $I_{0}$ is the modified Bessel function of order zero.
+The Fourier transfor $\phi_{KB,\beta}$ of the kernel above is known to be 
+\begin{equation}
+  \hat{\phi}_{KB,\beta}(\xi) := 
+  \frac{2\sinh\sqrt{\beta^2-\xi^2}}{I_{0}(\beta)\sqrt{\beta^2-\xi^2}}.
+  \label{eq:FT-KB-kernel}
+\end{equation} 
+We do not go over the detail further, but the existence of such approaches shows the high demand for establishing efficient numerical methods to deal with NUFFT since before.
+
+Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett} have proposed to apply "Exponential of Semicircle" kernel ('ES-kernel') defined below 
+\begin{equation}
+  \phi_{\beta}(z) := 
+  \begin{cases}
+    \exp\left(\beta\sqrt{1-z^2} - 1\right) \quad |z| \le 1,\\
+    0 \quad otherwise.
+  \end{cases}
+  \label{eq:ES-kernel}
+\end{equation}
+Although the most part of the structure of their numerical method is similar to the NUFFT with Gauusian kernel, the authors have chosen the special kernel and approximate the Frourier transform $\hat{\phi}_{\beta}$ with a numerical quadrature scheme instead of determining $\hat{\phi}_{\beta}$ explicitly when they 'deconvolve' Fourier coefficients.
+
+\subsection{Low-rank approximation approach}
+%TODO: fill a few pages on Prof. Townsend's paper
+Here we describe another type of numerical method with a different point of view proposed in cite{SISC-2018-Townsend}.
+First, the authors set up the formulation of the discrete Fourier transform as a matrix-vector product.
+The uniform case
+\begin{equation}
+  \bm{f} = \bm{F}_{2}\bm{c} 
+  \label{eq:matrix-vector-product-ufft-type-2}
+\end{equation}
+and the nonuniform case 
+\begin{equation}
+  \bm{f} = \tilde{\bm{F}}_{2}\bm{c} 
+  \label{eq:matrix-vector-product-nufft-type-2}
+\end{equation}
+where 
+$\bm{F}_{2} := \exp(2\pi i \frac{j}{N}k)$ and 
+$\tilde{\bm{F}}_{2} := \exp(2\pi i x_{j}k)$ 
+$(0 \le \j, k \le N-1)$
+
+\begin{equation}
+  \tilde{\bm{F}}_{2}\oslash\bm{F} \simeq 
+  \sum_{l=0}^{L-1}\bm{u}_{l}\otimes\bm{v}_{l}
+\end{equation}
+
+\begin{align}
+     \tilde{\bm{F}}_{2}\bm{c}
+  &= \tilde{\bm{F}}_{2}\left(\oslash\bm{F}\otimes\bm{F}\right)\bm{c}
+   = \left(\tilde{\bm{F}}_{2}\oslash\bm{F}\right)\otimes\bm{F}\bm{c} \\
+  &\simeq \left(\sum_{l=0}^{L-1}\bm{u}_{l}\otimes\bm{v}_{l}\right)\bm{F}\bm{c} \\
+  &= \sum_{l=0}^{L-1} \bm{D}_{u}\bm{F}\bm{D}_{v}\bm{c}.
+\end{align}
+
+
+keys:
+\begin{itemize}
+  \item matrix-vector products
+  \item low-rank approximation(approx with small number of diagonals)
+  \item Taylor approx -> Chebyshev approx
+\end{itemize}
+
+
+
+
+So far, we have studied past numerical methods and now have focused on a few approaches that seem most promissing.
+We will present the summary of the numerical results obtained by coding ourselves and using publicly available libraries for the methods descrived above.
+

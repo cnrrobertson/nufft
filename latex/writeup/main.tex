@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[nottoc]{tocbibind}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{math}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{url}
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphics}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{epsfig}
+\usepackage{wrapfig}
+\usepackage{psfrag}
+\usepackage{pgfgantt}
+\usepackage{multirow}
+\usepackage{comment}
+\usepackage{arydshln}
+\usepackage{float}
+
+\newtheorem{definition}{definition}[section]
+\newtheorem{hypothesis}{hypothesis}[section]
+\newtheorem{theorem}{theorem}[section]
+\newtheorem{prop}{proposition}[section]
+\newtheorem{lemma}{lemma}[section]
+\newtheorem{example}{example}[section]
+\newtheorem{remark}{Remark}[section]
+
+%----------------------------------------------------------------------
+%my macro
+\newcommand{\Veps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\dotp}[2]{\left(\bm{#1}\cdot\bm{#2}\right)}
+\newcommand{\tensp}[2]{\left[#1 \otimes #2\right]}
+\newcommand{\PD}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\PDO}[3]{\frac{\partial^{#3}{#1}}{\partial{#2}^{#3}}}
+\newcommand{\pdx}[1]{\frac{\partial}{\partial x_{#1}}}
+\newcommand{\pdxx}{\frac{\partial^{2}}{\partial x_1^2}}
+\newcommand{\pdyy}{\frac{\partial^{2}}{\partial x_2^2}}
+\newcommand{\pdxy}{\frac{\partial^{2}}{\partial x_1 \partial x_2}}
+\newcommand{\realp}[1]{{\rm Re}\left\{#1\right\}}
+\newcommand{\imagep}[1]{{\rm Im}\left\{#1\right\}}
+\newcommand{\nabx}[1]{\bm{\nabla_x}\left[#1\right]}
+\newcommand{\nabdx}[1]{\bm{\nabla}_{\bm{x}}\bm{\nabla}_{\bm{x}}\left[#1\right]}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\Sp}{S^{\prime}}
+\newcommand{\Dp}{D^{\prime}}
+\newcommand{\Pp}{P^{\prime}}
+
+\newcommand\nc{\newcommand}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\ba}{\begin{aligned}}
+\newcommand{\ea}{\end{aligned}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+
+%----------------------------------------------------------------------
+
+\title{
+  On Some Recently Developed Numerical Methods\\
+  for Nonuniform Fast Fourier Transform
+} 
+
+\author{
+  Connor Robertson and Kosuke Sugita
+}
+
+\begin{document}
+
+%\maketitle
+
+%\input{sections/introduction}
+\input{sections/numerical_methods}
+%\input{sections/numerical_examples}
+%\input{sections/conclusions}
+
+\bibliographystyle{unsrt}
+\bibliography{reference}
+
+\end{document} 
