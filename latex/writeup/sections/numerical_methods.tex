@@ -7,14 +7,14 @@
 First,
 Since Type-$1$ and Type-$2$ have been covered in the class, we avoid repeating the same discussions on these types.
 Instead, here we describe Type-$3$ NUFFT with Gaussian kernel based on \cite{JCP-2003-Greengard}.
-The main idea of Type-$3$ is to sandwich an intermediate uniform data between the input and output data both of which are nonuniform.
+The main idea of Type-$3$ is to sandwich an intermediate uniform data between the input and output both of which are nonuniform.
 The procedure is summarized as follows.
 \begin{enumerate}
-  \item Split the 'nonuniform to nonuniform' data processing into two steps
+  \item Split the 'nonuniform-nonuniform' data processing into two steps
   by adding the intermediate uniform data construction:
   \begin{enumerate}
-    \item from the nonuniform input to the uniform interdemiate,
-    \item from the nuniform interdemiate to the nonuniform output.
+    \item from the nonuniform input to the uniform interdemiate data,
+    \item from the uniform interdemiate data to the nonuniform output.
   \end{enumerate}
   \item Apply Type-$1$ method to the first 'nonuniform-uniform' step by convolving the input data.
   \item Then, apply Type-$2$ method to the second 'uniform-nonuniform' step by deconvolving the intermediate data.
@@ -26,9 +26,9 @@ In general, Type-$3$ NUFFT from the space domain and the frequency domain corres
   = \frac{1}{(2\pi)^d} \int_{\mathbb{R}^d}^{}
     f(\bm{x})\exp(-i\bm{s}\cdot\bm{x}) d\bm{x}
 \end{equation}
-where we denote the input data by $f(\bm{x})$ and output by $F(\bm{s})$ that is the Fourier transform $F(\bm{s})$.
+where we regard $f(\bm{x})$ as the input and $F(\bm{s})$ as the output.
 For simplicity, we discuss the one-dimensional case.
-We start with the first step, i.e, the construction of the intermediate uniform data by convolution.
+We start with the first step, i.e, the construction of the intermediate uniform data by the convolution technique.
 We have $f(x)$ with the input data as
 \begin{equation}
   f(x) = \sqrt{2\pi}\sum_{j=0}^{N-1}f_j\delta(x-x_j).
@@ -39,20 +39,22 @@ Then we convolve $f(x)$ using $g_{\tau}(x) := \exp(-\frac{1}{4\tau}x^2)$
   = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(y)g_{\tau}(x-y) dy
 \end{equation}
 setting the parameter $\tau$ appropriately.
-Since $f_{\tau}$ can be smooth enough, standard uniform FFT methods can be applied to obtain the data of $f_{\tau}$ on a uniformly spaced points.
-Now, switching our view of $f_{\tau}$ from the space domain to the frequency domain because the availability of the uniform sampling, we apply deconvolution to $f_{\tau}$ to obtain $F_{\tau}^{-\sigma}$ with an additional parameter $\sigma$.
-Specifically, we intend to apply the convolution theorem to the product $f_{\tau}G_{\sigma}$
-where $G_{\sigma} = \sqrt{2\sigma}e^{-s^2\sigma}$ is the Fourier transform of $g_{\sigma}$ defining the following deconvolved $f_{\tau}^{-\sigma}$ with $\sigma$
+Since $f_{\tau}$ can be smooth enough, the standard composite trapezoidal rule can be applied to obtain the data of $f_{\tau}$ on a uniformly spaced points.
+Now, switching our view of $f_{\tau}$ from the space domain to the frequency domain because of the availability of the uniform sampling, we apply the deconvolution of $f_{\tau}$ to obtain $F_{\tau}^{-\sigma}$ with an additional parameter $\sigma$.
+Specifically, we apply the convolution theorem to the product $f_{\tau}G_{\sigma}$
+where $G_{\sigma} = \sqrt{2\sigma}e^{-s^2\sigma}$ is the Fourier transform of $g_{\sigma}$.
+Next, we define $f_{\tau}^{-\sigma}$ deconvolved with $\sigma$
 \begin{equation}
     f_{\tau}^{-\sigma}(x) := f_{\tau}(x)/G_{\sigma}(x)
   = \frac{1}{\sqrt{2\sigma}}e^{\sigma x^2}f_{\tau}(x).
 \end{equation}
-Then, the Fourier transform $F_{\tau}^{-\sigma}$ by deconvolving $f_{\tau}$ is
+Then, the Fourier transform $F_{\tau}^{-\sigma}$ corresponding to deconvolved $f_{\tau}^{-\sigma}$ 
+with $\sigma$ is
 \begin{equation}
      F_{\tau}^{-\sigma}(x)
   := \frac{1}{2\pi} \int_{-\infty}^{\infty} f_{\tau}^{-\sigma}(x) e^{-ixs} dx.
 \end{equation}
-Introducing $f_{\tau}^{-\sigma}$ and $F_{\tau}^{-\sigma}$ and using the convolution theorem,
+Introducing above $f_{\tau}^{-\sigma}$ and $F_{\tau}^{-\sigma}$ and using the convolution theorem,
 we compute $F_{\tau}$ explicitly
 \begin{equation}
      F_{\tau}^{-\sigma}(x)G_{\sigma}
@@ -73,8 +75,8 @@ Recalling that $f_{\tau} = f\ast g_{\tau}$ and using the convolution theorem onc
 \end{equation}
 finally we have $F(s) = \frac{1}{\sqrt{2\tau}}e^{\tau s^2}F_{\tau}(s)$.
 
-So far, we studied the Gaussian FUNNT in class and in our project as described above.
-While the theoretical anlysis and numerical methods of NUFFT with Gaussian kernel have been well known \cite{SISC-1993-Dutt-Rokhlin}, \cite{SIAM-Rev-2004-Greengard}, it seems that the research activities to improve preexisting NUFFT schemes or develop alternative methods have not settled down, as far as we studied past numerical methods on NUFFT.
+So far, we studied the Gaussian FUNNT in class and our project as described above.
+While the theoretical analysis and numerical methods of NUFFT with Gaussian kernel have been well-known \cite{SISC-1993-Dutt-Rokhlin}, \cite{SIAM-Rev-2004-Greengard}, it seems that the research activities to improve preexisting NUFFT schemes and develop alternative methods have not settled down, as far as we studied past numerical methods on NUFFT.
 Even nowadays, a variety of numerical methods based on various approaches to NUFFT have been actively developed.
 We describe a few of them in the following discussions.
 
@@ -83,7 +85,7 @@ One representative alternative to Gaussian NUFFT is to choose a different kernel
 This is a natural derivation because it is expected that the other part of NUFFT can remain the same except for the choice of the kernel.
 We briefly present a few of such kernels.
 
-In fact, alternative approaches to Gaussian NUFFT had already appeared in $1960$s in the area of digital signal processing.
+Alternative approaches to Gaussian NUFFT had already appeared in $1960$s in the area of digital signal processing.
 For example, some researchers have carried out some analysis of NUFFT with "Kaiser-Bessel" kernel \cite{Book-Kaiser} defined below
 \begin{equation}
   \phi_{KB,\beta}(z) :=
@@ -102,7 +104,7 @@ The Fourier transfor $\phi_{KB,\beta}$ of the kernel above is known to be
 \end{equation}
 We do not go over the detail further, but the existence of such approaches shows the high demand for establishing efficient numerical methods to deal with NUFFT since before.
 
-Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett} have proposed to apply "Exponential of Semicircle" kernel ('ES-kernel') defined below
+Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett} have proposed to apply "Exponential of Semicircle" kernel ("ES-kernel") defined below
 \begin{equation}
   \phi_{\beta}(z) :=
   \begin{cases}
@@ -111,51 +113,77 @@ Recently, obtaining an insight from Kaiser-Bessel kernel, the authors in \cite{S
   \end{cases}
   \label{eq:ES-kernel}
 \end{equation}
-Although the most part of the structure of their numerical method is similar to the NUFFT with Gaussian kernel, the authors have chosen the special kernel and approximate the Fourier transform $\hat{\phi}_{\beta}$ with a numerical quadrature scheme instead of determining $\hat{\phi}_{\beta}$ explicitly when they 'deconvolve' Fourier coefficients.
+Although most of the structure of their numerical method is similar to the NUFFT with Gaussian kernel, the authors have chosen the special kernel and approximated the Fourier transform $\hat{\phi}_{\beta}$ with a numerical quadrature scheme instead of determining $\hat{\phi}_{\beta}$ explicitly when they deconvolve Fourier coefficients.
 
 \subsection{Low-rank approximation approach}
-% TODO: add mathematical descriptiontions based on Dr. Townsend's paper
-Here we describe another type of numerical method with a different point of view proposed in cite{SISC-2018-Townsend}.
-First, the authors set up the formulation of the discrete Fourier transform as a matrix-vector product.
-The uniform case
+In addition to the approaches explained above, we describe another type of numerical method with a different point of view proposed in \cite{SISC-2018-Townsend}.
+Following the literature, we briefly summarize the method with our focus on Type-$2$ NUFFT because the derivations of the other two types of their method are derived from the one for Type-$2$.
+First, we set up the formulation of the discrete Fourier transform as a matrix-vector product.
+The discrete Fourier transform of Type-$2$ with the same size $N$ of the input and output can be written as 
 \begin{equation}
-  \bm{f} = \bm{F}_{2}\bm{c}
-  \label{eq:matrix-vector-product-ufft-type-2}
-\end{equation}
-and the nonuniform case
-\begin{equation}
-  \bm{f} = \tilde{\bm{F}}_{2}\bm{c}
+  \bm{f} = \tilde{\bm{F}}\bm{c}
   \label{eq:matrix-vector-product-nufft-type-2}
 \end{equation}
 where
-$\bm{F}_{2} := \exp(2\pi i \frac{j}{N}k)$ and
-$\tilde{\bm{F}}_{2} := \exp(2\pi i x_{j}k)$
-$(0 \le \j, k \le N-1)$
-
+$\bm{c}$ is the $N \times 1$ uniform input vector in the frequency domain, 
+$\bm{f}$ is the $M \times 1$ nonuniform output vector in the normalized space domain sampled at $(x_j)_{j=0}^{N-1} \subset [0, 1]$, and 
+$\tilde{\bm{F}} := \exp(2\pi i x_{j}k)$ is $N \times N$ matrix composed of the exponential terms
+$(0 \le j, k \le N-1)$.
+Also, we define the $N \times N$ matrix for the uniform discrete Frourier transform
+$\bm{F} := \exp(2\pi i \frac{j}{N}k)$.
+If the nonuniform $(x_j)$'s are nearly equispaced, then there exist $L \ll N$ pairs of $N \times 1$
+vectors $(\bm{u}_l, \bm{v}_l)_{l=0}^{L-1}$ such that 
 \begin{equation}
-  \tilde{\bm{F}}_{2}\oslash\bm{F} \simeq
-  \sum_{l=0}^{L-1}\bm{u}_{l}\otimes\bm{v}_{l}
+  \bm{\tilde{F}}\oslash\bm{F} \simeq
+  \sum_{l=0}^{L-1}\bm{u}_{l}\bm{v}_{l}^{T}
 \end{equation}
-
+where $\tilde{\bm{F}}\oslash\bm{F}$ is denoted by elementwise division of $\tilde{\bm{F}}$ by $\bm{F}$.
+We approximate $\bm{\tilde{F}}$ as 
 \begin{align}
-     \tilde{\bm{F}}_{2}\bm{c}
-  &= \tilde{\bm{F}}_{2}\left(\oslash\bm{F}\otimes\bm{F}\right)\bm{c}
-   = \left(\tilde{\bm{F}}_{2}\oslash\bm{F}\right)\otimes\bm{F}\bm{c} \\
-  &\simeq \left(\sum_{l=0}^{L-1}\bm{u}_{l}\otimes\bm{v}_{l}\right)\bm{F}\bm{c} \\
-  &= \sum_{l=0}^{L-1} \bm{D}_{u}\bm{F}\bm{D}_{v}\bm{c}.
+     \tilde{\bm{F}}
+  &= \tilde{\bm{F}}\left(\oslash\bm{F}\otimes\bm{F}\right)
+   = \left(\tilde{\bm{F}}\oslash\bm{F}\right)\otimes\bm{F} \\
+  &\simeq \left(\sum_{l=0}^{L-1}\bm{u}_{l}\bm{v}_{l}^{T}\right)\bm{F} \\
+  &= \sum_{l=0}^{L-1}\left(\bm{D}_{u,l}\bm{F}\bm{D}_{v,l}\right)
+  \label{eq:matrix-approximation-type2}
 \end{align}
+where $\otimes$ indicates the elementwise product, 
+$\bm{D}_{u,l}$ and $\bm{D}_{v,l}$ are diagonal matrices composed of $\bm{u}_{l}$ and $\bm{v}_{l}$.
+Since $\bm{D}_{u,l}$ and $\bm{D}_{v,l}$ are sparse and the uniform FFT can be applied to the matrix-vector product with $\bm{F}$, the overall time complexity of (\ref{eq:matrix-approximation-type2})
+is $O(L N \log(N))$.
+The approximation (\ref{eq:matrix-approximation-type2}) is derived from splitting the exponential terms 
+\begin{equation}
+    \tilde{F}_{jk} = \exp(-2\pi i x_j k) 
+  = \exp(-2\pi i (x_j - j/N)k)\exp(-2\pi i jk/N)
+\end{equation}
+and the assumption of nearly equispaced distribution of $(x_j)$'s.
+The key observation of this method is that appropriate polynomial expansions of $\exp(-2\pi i (x_j - j/N)k)$ enable us to approximate the matrix with a low rank matrix.
+Although Taylor approximation is used in some past literature such as \cite{SISC-1996-Anderson},
+it turns out that the linear system tends to be unstable.
+Instead, the authors in \cite{SISC-2018-Townsend} propose to choose Chebyshev polynomials.
+Since the theoretical discussion requires us to a fairly large amount of lemmas and theorems, we skip the further detail.
 
-
-keys:
-\begin{itemize}
-  \item matrix-vector products
-  \item low-rank approximation(approx with small number of diagonals)
-  \item Taylor approx -> Chebyshev approx
-\end{itemize}
-
-
-
+In general cases of nonuniform $(x_j)$'s that are far from the equispaced distribution,
+we need to modify the derivation slightly.
+For such a modification, we define $(s_{j})_{j=0}^{N-1} \subset \{0, 1, \dots, N\}$ such that
+$s_{j}/N$ is the closest point to $x_{j}$.
+Furthermore, we define 
+\begin{equation}
+  t_{j} := 
+  \begin{cases}
+    s_{j} \quad 0 \le s_{j} \le N-1, \\
+    0     \quad s_{j} = N
+  \end{cases}
+\end{equation}
+to take the periodicity into account and rewrite $\tilde{F}_{jk}$ as 
+\begin{align}
+     \tilde{F}_{jk} 
+  &= \exp(-2\pi i x_j k) \\
+  &= \exp(-2\pi i (x_j - s_{j}/N)k)\exp(-2\pi i s_{j}k/N) \\
+  &= \exp(-2\pi i (x_j - s_{j}/N)k)\exp(-2\pi i t_{j}k/N).
+\end{align}
+The remaining part is the same as the nearly uniform case.
 
 So far, we have studied past numerical methods and now have focused on a few approaches that seem most promising.
-We will present the summary of the numerical results obtained by coding ourselves and using publicly available libraries for the methods described above.
+In the next section, we present a small part of the numerical results obtained by coding ourselves and using publicly available libraries for the methods described above.
 
