@@ -1,10 +1,6 @@
 \section{Numerical methods}
 
-
 \subsection{Gaussian kernel NUFFT}
-%TODO: fill a few pages on Type-3 NUFFT with Gaussian kernel here.
-
-First,
 Since Type-$1$ and Type-$2$ have been covered in the class, we avoid repeating the same discussions on these types.
 Instead, here we describe Type-$3$ NUFFT with Gaussian kernel based on \cite{JCP-2003-Greengard}.
 The main idea of Type-$3$ is to sandwich an intermediate uniform data between the input and output both of which are nonuniform.
@@ -80,7 +76,7 @@ While the theoretical analysis and numerical methods of NUFFT with Gaussian kern
 Even nowadays, a variety of numerical methods based on various approaches to NUFFT have been actively developed.
 We describe a few of them in the following discussions.
 
-\subsection{Alternative kernel approach}
+\subsection{Alternative kernel approaches}
 One representative alternative to Gaussian NUFFT is to choose a different kernel.
 This is a natural derivation because it is expected that the other part of NUFFT can remain the same except for the choice of the kernel.
 We briefly present a few of such kernels.
