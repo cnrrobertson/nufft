@@ -27,7 +27,7 @@ Thus, we find the crux of the numerical challenge: balance the accuracy of the r
 To demonstrate this balance, we consider a simple example in which we would like to find the uniform Fourier representation of $\sin{(x)} $ using $N$ sample points $x_j$ randomly distributed in $[0, 2\pi]$ using a uniform distribution.
 These sample points can be seen in Figure~\ref{fig:nu_points}.
 
-\begin{figure}[htpb]
+\begin{figure}[htpb!]
     \centering
     \includegraphics[width=0.8\textwidth]{images/nu_points.png}
     \caption{Non uniform sample points}
@@ -36,7 +36,7 @@ These sample points can be seen in Figure~\ref{fig:nu_points}.
 
 Using these samples, we can fit a simple piece-wise linear interpolation to sample uniform points as seem in Figure~\ref{fig:images-interp-png}.
 
-\begin{figure}[htpb]
+\begin{figure}[htpb!]
     \centering
     \includegraphics[width=0.8\textwidth]{images/interp.png}
     \caption{Piece-wise linear interpolant of nonuniform points}
@@ -46,7 +46,7 @@ Using these samples, we can fit a simple piece-wise linear interpolation to samp
 In comparison, we can smooth the nonuniform points using the exponential of semicircle kernel as described in the previous section.
 This convolution results in uniform samples as seen in Figure~\ref{fig:images-es-png}.
 
-\begin{figure}[htpb]
+\begin{figure}[htpb!]
     \centering
     \includegraphics[width=0.8\textwidth]{images/es.png}
     \caption{Exponential of semicircle convolution of nonuniform sample points}
@@ -55,7 +55,7 @@ This convolution results in uniform samples as seen in Figure~\ref{fig:images-es
 
 Once resampled to uniform points, we can use the FFT to examine the Fourier spectrum of our samples.
 
-\begin{figure}[htpb]
+\begin{figure}[htpb!]
     \centering
     \includegraphics[width=0.8\textwidth]{images/fft_comparison.png}
     \caption{Comparison of spectra for uniform fft, interpolated fft, and smoothed nufft}
@@ -66,7 +66,7 @@ As expected, we can observe the reduction in accuracy using smoothing kernels as
 However, we can also quickly see the reduction in computational cost between the methods.
 Figure~\ref{fig:images-speed-png} shows the speed of the approaches as a function of the number of nonuniform samples.
 
-\begin{figure}[htpb]
+\begin{figure}[htpb!]
     \centering
     \includegraphics[width=0.8\textwidth]{images/speed.png}
     \caption{Comparison of method speed between interpolating and kernel methods}
