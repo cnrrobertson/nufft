@@ -5,40 +5,34 @@ include("../../src/nufft.jl")
 using Plots
 using FFTW
 using Interpolations
-using Random
 
 # %%
-# Look at gaussian window function
+# Look at kaiser-bessel function
 ts = range(0, 2pi, length=1000)
-tau = .01
+beta = .1
 center = 2
 tol = 1e-5
-ys = nufft.gaussian_window.(ts, center, tau)
+ys = nufft.kaiser_bessel.(ts, center, beta)
 zs = float.(ys .< tol)
-P = plot(ts, ys, label="Gaussian window function")
+P = plot(ts, ys, label="Kaiser besel function")
 display(P)
 
 # %%
 # Smoothing for some nonuniform data
-rng = MersenneTwister(1)
-ts = sort(rand(rng, 64) .* 2pi)
+ts = sort(rand(20) .* 2pi)
 ys = sin.(ts)
 
-P = scatter(ts, ys, label=nothing)
-savefig(P, "../../latex/writeup/images/nu_points.png")
-display(P)
-# %%
-
 # Data
-P = plot(ts, ys)
+P = plot(ts, ys, label=nothing)
 scatter!(ts, ys, label="Nonuniform points")
-for tau in [.00001, .001, .01, .1]
+for beta in [.1, .2, .4]
     full_ts = range(0, 2pi, length=1000)
     full_ys = zeros(size(full_ts)...)
     for (t, y) in zip(ts, ys)
-        full_ys .+= y .* nufft.gaussian_window.(full_ts, t, tau)
+        full_ys .+= y .* nufft.kaiser_bessel.(full_ts, t, beta)
     end
-    plot!(full_ts, full_ys ./ maximum(abs.(full_ys)), label="Gaussian tau=$tau")
+    plot!(full_ts, full_ys ./ maximum(abs.(full_ys)), label="Kaiser-bessel beta=$beta")
+    # plot!(full_ts, full_ys, label="Kaiser-bessel beta=$beta")
 end
 display(P)
 
@@ -49,14 +43,14 @@ ys = sin.(ts)
 
 # Data
 P = plot(ts, sin.(ts), label="True")
-for tau in [.01, .1, 1, 2, 3]
+for beta in [.01, .1, 1, 2, 3]
     full_ts = range(0, 2pi, length=length(ts)*2)
     full_ys = zeros(size(full_ts)...)
     for (t, y) in zip(ts, ys)
-        full_ys .+= y .* nufft.gaussian_window.(full_ts, t, tau)
+        full_ys .+= y .* nufft.kaiser_bessel.(full_ts, t, beta)
     end
-    # lines!(full_ts, abs.(sin.(full_ts) .- full_ys ./ maximum(abs.(full_ys))), label="Difference tau=$tau")
-    plot!(full_ts, full_ys ./ maximum(abs.(full_ys)), label="tau=$tau")
+    # lines!(full_ts, abs.(sin.(full_ts) .- full_ys ./ maximum(abs.(full_ys))), label="Difference beta=$beta")
+    plot!(full_ts, full_ys ./ maximum(abs.(full_ys)), label="beta=$beta")
 end
 display(P)
 
@@ -69,11 +63,11 @@ ys = y.(ts)
 
 # Data
 R = 2
-tau = .001
+beta = .1
 full_ts = range(0, 2pi, length=R*M)
 full_ys = zeros(size(full_ts)...)
 for (t, y) in zip(ts, ys)
-    full_ys .+= (y .* nufft.gaussian_window.(full_ts, t, tau))
+    full_ys .+= (y .* nufft.kaiser_bessel.(full_ts, t, beta))
 end
 # full_ys ./= maximum(abs.(full_ys))
 
@@ -86,8 +80,8 @@ full_yhats = fftshift(fft(full_ys))
 full_ks = 1:length(full_yhats)
 nu_ks = -(R*M ÷ 2):((R*M ÷ 2) - 1)
 u_ks = -(M ÷ 2):((M ÷ 2) - 1)
-full_yhats .*= sqrt(pi/tau) .* exp.((nu_ks .^ 2) .* tau)
-full_yhats = fftshift(full_yhats)
+# full_yhats ./= nufft.kaiser_bessel_ft.(u_ks, 0, beta)
+# full_yhats = fftshift(full_yhats)
 # full_ys = real.(ifft(full_yhats))
 
 p1 = plot(u_ks, real.(yhats))
