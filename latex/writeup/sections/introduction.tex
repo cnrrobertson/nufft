@@ -1,25 +1,26 @@
 \section{Introduction}
 
-There are many signal and image processing applications in which real or frequency space samples are collected non-uniformly.
-As a result, analyzing the Fourier spectrum of nonuniform samples or evaluating points from non-uniform frequency data has been a focus of numerical analysts for more than half a century. % TODO: Citation?
-Although this can be easily accomplished using the direct discrete Fourier transform (DFT) sum of non-uniform samples $(x_n, f(x_n))$ where $x_n = \frac{2\pi n}{N}$:
+There are many signal and image processing applications in which real or frequency space samples are collected nonuniformly.
+As a result, analyzing the Fourier spectrum of nonuniform samples or evaluating points from nonuniform frequency data has been of interest for more than half a century. % TODO: Citation?
+Although this can be directly accomplished using the discrete Fourier transform (DFT) sum of nonuniform samples $(x_n, f(x_n))$ where $x_n = \frac{2\pi n}{N}$:
 \begin{align*}
   \hat{f}(k) = \sum_{n=0}^{N-1} f(x_n) e^{-2i \pi k \frac{n}{N}}
 ,\end{align*}
-this summation is of order $O(N^{2})$.
+this summation is of order $O(N^{2})$ and therefore not very fast.
 
-It would be preferable to reduce the computational burden of this process via the fast Fourier transform (FFT).
+It would be preferable to reduce the computational burden of this process via a procedure such as the fast Fourier transform (FFT).
 This algorithm can reduce the computational cost to $O(N\log{N})$ by taking advantage of the symmetry provided by uniform sampling:
 \begin{align*}
   \hat{f}(k) = \sum_{n=0}^{\frac{N}{2}-1} f(x_{2n})e^{-2i \pi k \frac{2n}{N}} + e^{-2i\frac{\pi k}{N}} \sum_{n=0}^{\frac{N}{2}-1} f(x_{2n+1}e^{-2i \pi k \frac{2n}{N}})
 .\end{align*}
-Due to this symmetry requirement, it cannot be directly applied to non-uniform points.
+However, due to the requirement of symmetry, it cannot be applied to nonuniform points.
 
-Thus, there has been significant effort to accurately and cheaply remap the non-uniform samples to a uniform grid which can then be transformed via the FFT.
-This has become known as the non-uniform fast Fourier transform (NUFFT) the key component of which is the procedure used to map the non-uniform samples to uniform samples.
+Thus, there has been significant effort to accurately and cheaply remap the nonuniform samples to a uniform grid to which the FFT can be applied.
+This has become known as the nonuniform fast Fourier transform (NUFFT).
+The key procedure for this algorithm is the mapping the nonuniform samples to uniform samples.
 
 Several approaches have been proposed for this initial mapping including polynomial or spline interpolation, delta spike smoothing via smooth kernel functions, and low rank representations of the DFT matrix. % TODO: Citation?
-Many inroads have been made to maximize speed and accuracy with these methods, but the exact mapping procedure is still an active research topic.
+Many inroads have been made to maximize speed and accuracy with these methods, but the exact resampling method is still an active research topic.
 
-In this report, we explore the variety of approaches for mapping non-uniform to uniform points including the most popular smoothing kernels and the low-rank approximation.
-We complement this discussion with some programming exploration and examples using our own code as well as established NUFFT libraries.
+In this report, we explore a variety of approaches for the NUFFT algorithm including the most popular smoothing kernels for resampling and the low-rank DFT approximation.
+We complement this discussion with some numerical exploration and examples using our own code as well as established NUFFT libraries.
