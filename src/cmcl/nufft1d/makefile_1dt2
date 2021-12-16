@@ -1,0 +1,19 @@
+
+# compiling with gfortran-10 fails somehow
+FC = gfortran-9
+FFLAGS = -O2 
+PROJECT = nufft1dt2
+SOURCES = cmcl1dt2.f nufft1df90.f dirft1d.f dfftpack.f next235.f
+
+.PHONY: all clean
+
+OBJECTS = $(patsubst %.f,%.o,$(patsubst %.f90,%.o,$(SOURCES)))
+
+all:
+	$(FC) $(FFLAGS) $(SOURCES) -o $(PROJECT)
+
+%.o : %.f
+	$(FC) $(FFLAGS) $< -o $@
+
+clean:
+	rm -f $(OBJECTS)
