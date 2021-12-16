@@ -12,15 +12,18 @@ input_file = "input_1dt1.dat"
 
 # Type-1 f(x[i]): nonuniform input, F(k[j]): uniform output
 tolerance = 1e-12
-n = 256
-m = 90
+n = 1028
+m = 128
 t = rand(Float64, (n,1)) # random numbers in [0,1)
 # scale xs between [-\pi, \pi]
-freq = 1.0
-c = 3.0
+# freq = 1.0
+# c = 3.0
+# f(x) = c * sin(freq * x)
+f(x) = cos(x^2)
+
 x = (2pi .* t) .- pi
 sort!(x, dims=1)
-fx = c .* sin.(freq .* x)
+fx = f.(x)
 open(input_file, "w") do io
     println(io, tolerance)
     println(io, n)

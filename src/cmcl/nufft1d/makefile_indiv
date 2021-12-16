@@ -1,0 +1,25 @@
+
+# compiling with gfortran-10 fails somehow
+FC = gfortran-9
+FFLAGS = -O2
+PROJECT1 = nufft1dt1
+PROJECT2 = direct1dt1
+DEST = ../../../presentation_plots/
+SOURCES1 = nufft1dt1.f nufft1df90.f dfftpack.f next235.f
+SOURCES2 = direct1dt1.f dirft1d.f
+
+.PHONY: all clean
+
+OBJECTS = $(patsubst %.f,%.o,$(patsubst %.f90,%.o,$(SOURCES)))
+
+all:
+	$(FC) $(FFLAGS) $(SOURCES1) -o $(PROJECT1)
+	$(FC) $(FFLAGS) $(SOURCES2) -o $(PROJECT2)
+	cp $(PROJECT1) $(DEST)
+	cp $(PROJECT2) $(DEST)
+
+%.o : %.f
+	$(FC) $(FFLAGS) $< -o $@
+
+clean:
+	rm -f $(OBJECTS)
