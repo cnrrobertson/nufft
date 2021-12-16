@@ -8,14 +8,20 @@
       complex*16 cj(mx),cj0(mx),cj1(mx)
       complex*16 fk0(mx),fk1(mx)
 
-      read *, eps
-      read *, nj
+      open(1, file= 'input_1dt1.dat', status='old')
+      ! read *, eps
+      ! read *, nj
+      read(1, *) eps
+      read(1, *) nj
       do k1 = -nj/2, (nj-1)/2
          j = k1+nj/2+1
-         read (*,*), xj(j), cin
+      !    read (*,*), xj(j), cin
+         read(1, *), xj(j), cin
          cj(j) = dcmplx(cin)
       enddo
-      read *, ms
+      ! read *, ms
+      read(1, *) ms
+      close(1)
 
       iflag = -1
       call dirft1d1(nj,xj,cj,iflag, ms,fk0)
