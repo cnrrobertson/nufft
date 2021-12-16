@@ -31,8 +31,7 @@ function nufft1d_gaussian()
     ttime = parse.(Float64, output[end])
     return fk0, ttime
 end
-nufft1d_gaussian()
-# %%
+
 function nufft1d_interpolation(nu_xs, nu_ys, m)
     ys_fit = LinearInterpolation(nu_xs, nu_ys, extrapolation_bc=Line())
     x_min = minimum(nu_xs)
