@@ -26,6 +26,7 @@ c     direct evaluations
         write(*,'(e15.6,a,e15.6)'), real(fk0(k1)), ' ', imag(fk0(k1))
       enddo
 c     nufft evaluations
+      write(*, '(a)') ' '
       do k1 = 1,ms
         write(*,'(e15.6,a,e15.6)'), real(fk1(k1)), ' ', imag(fk1(k1))
       enddo
