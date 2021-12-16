@@ -6,3 +6,8 @@
 *.log
 *.out
 *.pdf
+*.bcf
+*.nav
+*.run.xml
+*.snm
+*.toc
