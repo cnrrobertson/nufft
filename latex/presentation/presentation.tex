@@ -295,11 +295,28 @@
   $s_{j}/N$ is the closest point to $x_{j}$.
 \end{frame}
 
+\begin{frame}
+  \frametitle{Speed}
+  All methods scale far better than direct evaluation:
+
+  \vfill
+
+  \centering \includegraphics[width=.8\textwidth]{images/n_vs_time.png}
+
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Conclusion}
 
-\begin{frame}{Conclusion}
+  \begin{itemize}
+      \item Sampling uniform points from nonuniform points is delicate - speed vs accuracy
+      \item Selecting sampling method is an active research topic
+      \item Alternative versions are appearing - low rank approximation
+  \end{itemize}
+
 %  \begin{itemize}
 %    \item Identifying a fast and accurate method has been a significant challenge for more than half a century.
 %    \item Our explorations of preexisting numerical methods for NUFFT:
@@ -314,26 +331,6 @@
 %    \end{itemize}
 %    \item This area is still being actively researched, and we were able to recognize the challenge of balancing speed and accuracy.
 %  \end{itemize}
-%=======
-\begin{frame}
-  \frametitle{Speed}
-  All methods scale far better than direct evaluation:
-
-  \vfill
-
-  \centering \includegraphics[width=.8\textwidth]{images/n_vs_time.png}
-
-\end{frame}
-
-\section{Conclusion}
-\begin{frame}
-  \frametitle{Conclusion}
-
-  \begin{itemize}
-      \item Sampling uniform points from nonuniform points is delicate - speed vs accuracy
-      \item Selecting sampling method is an active research topic
-      \item Alternative versions are appearing - low rank approximation
-  \end{itemize}
 
 \end{frame}
 \end{document}
