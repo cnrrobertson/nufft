@@ -177,8 +177,9 @@
   \end{equation}
 \end{frame}
 
-\begin{frame}{Alternative Kernel Approach: KB-kernel}
-  The ``Kaiser-Bessel'' kernel below \cite{Book-Kaiser} has been studied for DSP in $1960$s
+%\begin{frame}{Alternative Kernel Approach: KB-kernel}
+\begin{frame}{Alternative Kernel Approaches}
+  The ``Kaiser-Bessel'' kernel (KB-kernel) below \cite{Book-Kaiser} has been studied for DSP in $1960$s
   \begin{equation}
     \phi_{KB,\beta}(z) :=
     \begin{cases}
@@ -187,17 +188,10 @@
     \end{cases}
     \label{eq:KB-kernel}
   \end{equation}
-  where $I_{0}$ is the modified Bessel function of order zero.
-  KB-kernel is known to decay quickly in frequency space.
-  The Fourier transform $\phi_{KB,\beta}$ of the kernel above is known to be
+  where $I_{0}$ is the modified Bessel function of order zero
   \begin{equation}
-    \hat{\phi}_{KB,\beta}(\xi) :=
-    \frac{2\sinh\sqrt{\beta^2-\xi^2}}{I_{0}(\beta)\sqrt{\beta^2-\xi^2}}.
-    \label{eq:FT-KB-kernel}
+    I_{n}(z) := \frac{1}{2\pi i}\oint_{\Gamma}\exp\left(\frac{z}{2}(t+\frac{1}{t})\right)t^{-(n+1)}dt.
   \end{equation}
-\end{frame}
-
-\begin{frame}{Alternative Approach: ES-Kernel}
   The ``exponential of semicircle'' kernel (ES-kernel) inspired by the KB-kernel has been proposed
   \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett}
   \begin{equation}
@@ -208,9 +202,25 @@
     \end{cases}
     \label{eq:ES-kernel}
   \end{equation}
-  The ES-kernel has demonstrated near optimal balance of locality for speed and accuracy in smoothing via careful analysis of its decay in real and Fourier space.
+\end{frame}
 
-  Lack of a closed form of Fourier transform of the kernel - approximate the Fourier transform $\hat{\phi}_{\beta}$ with a numerical quadrature scheme.
+\begin{frame}{Features of Alternative Kernels}
+  \begin{itemize}
+    \item KB-kernel is known to decay quickly in frequency space 
+      and has the closed form of the Fourier transform 
+      \begin{equation}
+        \hat{\phi}_{KB,\beta}(\xi) :=
+        \frac{2\sinh\sqrt{\beta^2-\xi^2}}{I_{0}(\beta)\sqrt{\beta^2-\xi^2}}.
+        \label{eq:FT-KB-kernel}
+      \end{equation}
+    \item The ES-kernel has steeper decay, but lacks of a closed form of Fourier transform of the kernel-approximated with a numerical quadrature scheme.
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[height=.35\textheight,width=.4\textwidth]{images/comparison_kernels.png}
+    \caption{Graphs of kernels on the real axis from \cite{SISC-2019-Barnett}.}
+    \label{fig:kernel-comparison}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{Approach Based on Low-Rank Approximation}
