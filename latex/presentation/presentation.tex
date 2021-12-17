@@ -83,7 +83,12 @@
         \end{itemize}
       \end{column}
       \begin{column}{.5\textwidth}
-        \centering \includegraphics[width=\textwidth]{images/sample_gaussian.png}
+        \begin{figure}
+          \centering
+          \includegraphics[width=\textwidth]{images/sample_gaussian.png}
+          \caption{An image of smearing sources from 
+            Greengard and Lee (2004) \cite{SIAM-Rev-2004-Greengard}}
+        \end{figure}
       \end{column}
   \end{columns}
 \end{frame}
@@ -97,6 +102,8 @@
 \end{frame}
 
 \begin{frame}{Type-$1$ with Gaussian Kernel}
+  References: Dutt and Rokhlin ($1993$) \cite{SISC-1993-Dutt-Rokhlin},
+    Greengard and Lee ($2004$) \cite{SIAM-Rev-2004-Greengard}.
   \begin{itemize}
     \item Input: $(f_{j})_{j=0}^{N-1}$ at nonuniform $(x_{j})_{j=0}^{N-1}$,
     \item Output: $(F_{k})_{k=0}^{M-1}$ at uniform $-M/2 \le k \le M/2-1$.
@@ -131,8 +138,8 @@
     \item Input: $(F_{k})_{k=0}^{M-1}$ at uniform $-M/2 \le k \le M/2-1$,
     \item Output: $(f_{j})_{j=0}^{N-1}$ at nonuniform $(x_{j})_{j=0}^{N-1}$.
   \end{itemize}
-  Assume $f_{-\tau}$ s.t. $(f_{-\tau}\ast g_{\tau})(x) \simeq f(x)$ implying
-  $F_{-\tau}G_{\tau} \simeq F$. Then
+  Assume $f_{-\tau}$ s.t. $(f_{-\tau}\ast g_{\tau})(x) = f(x)$ implying
+  $F_{-\tau}G_{\tau} = F$. Then
   \begin{equation}
       f_{-\tau}(x)
     = \frac{1}{M_{r}}\sum_{k=0}^{M_{r}-1} F_{-\tau}(k)e^{ikx}
@@ -148,7 +155,8 @@
 
 \begin{frame}{Type-$3$ with Gaussian Kernel}
   Both input $(f_{j})_{j=0}^{N-1}$ and output $(F(s_{k}))_{k=0}^{M-1}$ are nonuniform.
-  Type-$3$ NUFFT
+  In Greengard and Lee ($2005$) \cite{JCP-2005-Greengard}, the procedure is summarized
+  as follows.
   \begin{enumerate}
     \item Split the `nonuniform-nonuniform' data processing into two steps
     by inserting the intermediate uniform data construction between.
@@ -158,28 +166,29 @@
 \end{frame}
 
 \begin{frame}{Type-$3$ with Gaussian Kernel}
-  First, convolve $f$
+  First, convolve $f$ with respect to $\tau$ (Type-$1$ step)
   \begin{equation}
       f_{\tau}(x) = f\ast g_{\tau} (x) = \int_{0}^{2\pi} f(y)g_{\tau}(x-y) dy.
   \end{equation}
   Next, assuming $f_{\tau}^{-\sigma}$ and $F_{\tau}^{-\sigma} = \mathcal{F}[f_{\tau}^{-\sigma}]$
   s.t.
   $f_{\tau}^{-\sigma}G_{\sigma} = f_{\tau}$ and $F_{\tau}^{-\sigma}\ast g_{\sigma} = F_{\tau}$
-  with an additional parameter $\sigma$. Then
+  with an additional parameter $\sigma$ (Type-$2$ step).
   \begin{align}
     F_{\tau}(s) &= F_{\tau}^{-\sigma}\ast g_{\sigma} (s) \\
     &\simeq \frac{1}{M_{r}}\sum_{m=0}^{M_{r}}
             F_{\tau}^{-\sigma}(2\pi m/M_{r})g_{\sigma}(s - 2\pi m/M_{r}).
   \end{align}
-  Recalling $F_{\tau} = FG_{\tau} \Leftrightarrow F = F_{\tau}/G_{\tau}$,
+  Recalling $F_{\tau} = FG_{\tau} \Leftrightarrow F = F_{\tau}/G_{\tau}$
+  to cancel the remaining effect of $\tau$ in the Type-$1$ step,
   \begin{equation}
     F(s) = \frac{1}{\sqrt{2\tau}}e^{\tau s^2}F_{\tau}(s).
   \end{equation}
 \end{frame}
 
-%\begin{frame}{Alternative Kernel Approach: KB-kernel}
 \begin{frame}{Alternative Kernel Approaches}
-  The ``Kaiser-Bessel'' kernel (KB-kernel) below \cite{Book-Kaiser} has been studied for DSP in $1960$s
+  The ``Kaiser-Bessel'' kernel (KB-kernel) by Kuro and Kaiser ($1966$) \cite{Book-Kaiser} 
+  has been studied for DSP in $1960$s
   \begin{equation}
     \phi_{KB,\beta}(z) :=
     \begin{cases}
@@ -192,8 +201,7 @@
   \begin{equation}
     I_{n}(z) := \frac{1}{2\pi i}\oint_{\Gamma}\exp\left(\frac{z}{2}(t+\frac{1}{t})\right)t^{-(n+1)}dt.
   \end{equation}
-  The ``exponential of semicircle'' kernel (ES-kernel) inspired by the KB-kernel has been proposed
-  \cite{SISC-2019-Barnett}, \cite{IEEE-2021-Barnett}
+  The ``exponential of semicircle'' kernel (ES-kernel) inspired by the KB-kernel has been proposed by Barnett et al. ($2019$) \cite{SISC-2019-Barnett}, ($2021$) \cite{IEEE-2021-Barnett}
   \begin{equation}
     \phi_{\beta}(z) :=
     \begin{cases}
@@ -224,8 +232,9 @@
 \end{frame}
 
 \begin{frame}{Approach Based on Low-Rank Approximation}
-  Another type of method with a different point of view proposed in \cite{SISC-2018-Townsend}
-  is to consider the NUFFT to be a linear system. For example, Type-$2$ NUFFT is
+  Another type of method with a different point of view proposed by Townsend ($2018$)
+  \cite{SISC-2018-Townsend} is to consider the NUFFT to be a linear system. 
+  For example, Type-$2$ NUFFT is
   \begin{equation}
     \bm{f} = \tilde{\bm{F}}\bm{c}
     \label{eq:matrix-vector-product-nufft-type-2}
@@ -238,11 +247,12 @@
     $(0 \le j, k \le N-1)$.
   \end{itemize}
   Also, we define the $N \times N$ matrix for the uniform discrete Frourier transform
-  $\bm{F} := \exp(2\pi i \frac{j}{N}k)$.
+  $\bm{F} := \exp(2\pi i \frac{j}{N}k)$.\\
+  The same number of input and output data is assumed here for simplicity.
 \end{frame}
 
 \begin{frame}{Approach Based on Low-Rank Approximation}
-  If the nonuniform $(x_j)$'s are nearly equispaced, then there exist $L \ll N$ pairs of $N \times 1$
+  There exist $L \ll N$ pairs of $N \times 1$
   vectors $(\bm{u}_l, \bm{v}_l)_{l=0}^{L-1}$ such that
   \begin{equation}
     \bm{\tilde{F}}\oslash\bm{F} \simeq
@@ -251,40 +261,40 @@
   where $\tilde{\bm{F}}\oslash\bm{F}$ is denoted by elementwise division of $\tilde{\bm{F}}$ by $\bm{F}$. Then
   \begin{align}
        \tilde{\bm{F}}
-    &= \tilde{\bm{F}}\left(\oslash\bm{F}\otimes\bm{F}\right)
-     = \left(\tilde{\bm{F}}\oslash\bm{F}\right)\otimes\bm{F} \\
+    &= \tilde{\bm{F}}\left(\oslash\bm{F}\odot\bm{F}\right)
+     = \left(\tilde{\bm{F}}\oslash\bm{F}\right)\odot\bm{F} \\
     &\simeq \left(\sum_{l=0}^{L-1}\bm{u}_{l}\bm{v}_{l}^{T}\right)\bm{F}
      = \sum_{l=0}^{L-1}\left(\bm{D}_{u,l}\bm{F}\bm{D}_{v,l}\right)
     \label{eq:matrix-approximation-type2}
   \end{align}
-  where $\otimes$ indicates the element-wise product,
+  where $\odot$ indicates the element-wise product,
   $\bm{D}_{u,l}$ and $\bm{D}_{v,l}$ are diagonal matrices composed of $\bm{u}_{l}$ and $\bm{v}_{l}$.
   Since $\bm{D}_{u,l}$ and $\bm{D}_{v,l}$ are sparse and the uniform FFT can be applied to the matrix-vector product with $\bm{F}$, the overall time complexity of (\ref{eq:matrix-approximation-type2})
   is $O(L N \log(N))$.
 \end{frame}
 
-\begin{frame}{Approach Based on Low-Rank Approximation}
-  The approximation (\ref{eq:matrix-approximation-type2}) is derived from
-  \begin{equation}
-      \tilde{F}_{jk} = \exp(-2\pi i x_j k)
-    = \exp(-2\pi i (x_j - j/N)k)\exp(-2\pi i jk/N)
-  \end{equation}
-  and the assumption of nearly equispaced distribution of $(x_j)$'s.
-  $(\exp(-2\pi i (x_j - j/N)k))$'s are approximated by Chebyshev polynomial expansions
-  in \cite{SISC-2018-Townsend} instead of Taylor approximations \cite{SISC-1996-Anderson},
-  which reports some instability.
-  In more general cases of nonuniform $(x_j)$'s that are far from the equispaced distribution,
-  we define
-  \begin{equation}
-    t_{j} :=
-    \begin{cases}
-      s_{j} \quad 0 \le s_{j} \le N-1, \\
-      0     \quad s_{j} = N
-    \end{cases}
-  \end{equation}
-  where $(s_{j})_{j=0}^{N-1} \subset \{0, 1, \dots, N\}$ such that
-  $s_{j}/N$ is the closest point to $x_{j}$.
-\end{frame}
+%\begin{frame}{Approach Based on Low-Rank Approximation}
+%  The approximation (\ref{eq:matrix-approximation-type2}) is derived from
+%  \begin{equation}
+%      \tilde{F}_{jk} = \exp(-2\pi i x_j k)
+%    = \exp(-2\pi i (x_j - j/N)k)\exp(-2\pi i jk/N)
+%  \end{equation}
+%  and the assumption of nearly equispaced distribution of $(x_j)$'s.
+%  $(\exp(-2\pi i (x_j - j/N)k))$'s are approximated by Chebyshev polynomial expansions
+%  in \cite{SISC-2018-Townsend} instead of Taylor approximations \cite{SISC-1996-Anderson},
+%  which reports some instability.
+%  In more general cases of nonuniform $(x_j)$'s that are far from the equispaced distribution,
+%  we define
+%  \begin{equation}
+%    t_{j} :=
+%    \begin{cases}
+%      s_{j} \quad 0 \le s_{j} \le N-1, \\
+%      0     \quad s_{j} = N
+%    \end{cases}
+%  \end{equation}
+%  where $(s_{j})_{j=0}^{N-1} \subset \{0, 1, \dots, N\}$ such that
+%  $s_{j}/N$ is the closest point to $x_{j}$.
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Examples}
@@ -354,6 +364,11 @@
    \end{itemize}
    \item This area is still being actively researched, and we were able to recognize the challenge of balancing speed and accuracy.
  \end{itemize}
-
 \end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{References}
+  \printbibliography
+\end{frame}
+
 \end{document}
